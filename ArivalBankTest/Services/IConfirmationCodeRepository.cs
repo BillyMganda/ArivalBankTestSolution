@@ -1,10 +1,11 @@
 ﻿using ArivalBankTest.Models;
+using ArivalBankTest.Requests;
 
 namespace ArivalBankTest.Services
 {
     public interface IConfirmationCodeRepository
     {
-        Task AddCodeAsync(ConfirmationCode code);
+        Task AddConfirmationCodeToDbAsync(SendCodeRequestModel requestModel);
         Task<ConfirmationCode> GetCodeAsync(string phoneNumber, string code);
         Task<bool> HasMaxConcurrentCodesAsync(string phoneNumber, int maxConcurrentCodes);
     }

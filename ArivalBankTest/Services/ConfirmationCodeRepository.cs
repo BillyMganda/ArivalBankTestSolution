@@ -1,5 +1,6 @@
 ﻿using ArivalBankTest.Data;
 using ArivalBankTest.Models;
+using ArivalBankTest.Requests;
 using Microsoft.EntityFrameworkCore;
 
 namespace ArivalBankTest.Services
@@ -12,9 +13,23 @@ namespace ArivalBankTest.Services
             _context = context;
         }
 
-        public async Task AddCodeAsync(ConfirmationCode code)
+        public string GenerateCode()
         {
-            _context.ConfirmationCodes.Add(code);
+            Random random = new Random();
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, 6).Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+        public async Task AddConfirmationCodeToDbAsync(SendCodeRequestModel requestModel)
+        {
+            var newConfirmationCode = new ConfirmationCode
+            {
+                PhoneNumber = requestModel.PhoneNumber,
+                Code = GenerateCode(),
+                ExpirationTime = DateTime.UtcNow,
+            };
+
+            _context.ConfirmationCodes.Add(newConfirmationCode);
             await _context.SaveChangesAsync();
         }
 
