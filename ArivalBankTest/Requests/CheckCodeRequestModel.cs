@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ArivalBankTest.Responses
+namespace ArivalBankTest.Requests
 {
     public class CheckCodeRequestModel
     {

@@ -1,4 +1,5 @@
-﻿using ArivalBankTest.Services;
+﻿using ArivalBankTest.Requests;
+using ArivalBankTest.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ArivalBankTest.Controllers
