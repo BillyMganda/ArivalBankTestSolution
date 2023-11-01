@@ -15,7 +15,7 @@ namespace ArivalBankTest.Services
             _configuration = configuration;
         }
 
-        private string GenerateRandomCode()
+        public string GenerateRandomCode()
         {
             Random random = new Random();
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
