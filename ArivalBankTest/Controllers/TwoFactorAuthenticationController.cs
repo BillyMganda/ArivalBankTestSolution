@@ -8,7 +8,7 @@ namespace ArivalBankTest.Controllers
     [ApiController]
     public class TwoFactorAuthenticationController : ControllerBase
     {
-        private readonly IConfirmationCodeRepository _codeRepository;
+        private readonly IConfirmationCodeRepository _codeRepository;        
         public TwoFactorAuthenticationController(IConfirmationCodeRepository codeRepository)
         {
             _codeRepository = codeRepository;

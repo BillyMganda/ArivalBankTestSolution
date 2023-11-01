@@ -7,6 +7,6 @@ namespace ArivalBankTest.Services
     {
         Task AddConfirmationCodeToDbAsync(SendCodeRequestModel requestModel);
         Task<ConfirmationCode> GetCodeAsync(CheckCodeRequestModel requestModel);
-        Task<bool> HasMaxConcurrentCodesAsync(string phoneNumber, int maxConcurrentCodes);
+        Task<bool> HasMaxConcurrentCodesAsync(string phoneNumber);
     }
 }
