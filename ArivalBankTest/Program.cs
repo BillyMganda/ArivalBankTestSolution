@@ -1,4 +1,5 @@
 using ArivalBankTest.Data;
+using ArivalBankTest.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SQL_DBConnection")));
+
+builder.Services.AddScoped<IConfirmationCodeRepository, ConfirmationCodeRepository>();
 
 
 var app = builder.Build();
