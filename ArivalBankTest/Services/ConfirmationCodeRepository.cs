@@ -33,12 +33,12 @@ namespace ArivalBankTest.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<ConfirmationCode> GetCodeAsync(string phoneNumber, string code)
+        public async Task<ConfirmationCode> GetCodeAsync(CheckCodeRequestModel requestModel)
         {
-            var results = await _context.ConfirmationCodes
-                .FirstOrDefaultAsync(c => c.PhoneNumber == phoneNumber && c.Code == code);
+            var response = await _context.ConfirmationCodes
+                .FirstOrDefaultAsync(c => c.PhoneNumber == requestModel.PhoneNumber && c.Code == requestModel.Code);
 
-            return results!;
+            return response!;
         }
 
         public async Task<bool> HasMaxConcurrentCodesAsync(string phoneNumber, int maxConcurrentCodes)
