@@ -12,5 +12,17 @@ namespace ArivalBankTest.Controllers
         {
             _codeRepository = codeRepository;
         }
+
+        [HttpPost("send-code")]
+        public async Task<IActionResult> SendCode([FromBody] SendCodeRequestModel model)
+        {           
+            return Ok(new { CodeSent = true });
+        }
+
+        [HttpPost("check-code")]
+        public async Task<IActionResult> CheckCode([FromBody] CheckCodeRequestModel model)
+        {            
+            return Ok(new { CodeValid = true });
+        }
     }
 }
