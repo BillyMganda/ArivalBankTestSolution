@@ -25,14 +25,12 @@ namespace ArivalBankTest.Controllers
 
             if (await _codeRepository.HasMaxConcurrentCodesAsync(model.PhoneNumber))
             {
-                return BadRequest("Maximum concurrent codes reached for this phone number.");
+                Log.Error($"Maximum concurrent codes reached for this phone number.");
+                return BadRequest("Maximum concurrent codes reached for this phone number.");                
             }
 
             try
-            {
-                string randomCode = _codeRepository.GenerateRandomCode();
-
-                Log.Information($"Generated code for {model.PhoneNumber}: {randomCode}");
+            {                       
 
                 await _codeRepository.AddConfirmationCodeToDbAsync(new SendCodeRequestModel
                 {
@@ -68,6 +66,7 @@ namespace ArivalBankTest.Controllers
                 // Check if the code has expired
                 if (code.ExpirationTime <= DateTime.UtcNow)
                 {
+                    Log.Error($"Code has expired");
                     return Ok(new { CodeValid = false });
                 }
 

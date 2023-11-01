@@ -2,6 +2,7 @@
 using ArivalBankTest.Models;
 using ArivalBankTest.Requests;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace ArivalBankTest.Services
 {
@@ -24,14 +25,17 @@ namespace ArivalBankTest.Services
 
         public async Task AddConfirmationCodeToDbAsync(SendCodeRequestModel requestModel)
         {
+            string code = GenerateRandomCode();
             double ExpirationTime = Convert.ToDouble(_configuration.GetSection("ServiceConfigs:CodeExpirationMinutes").Value);
 
             var newConfirmationCode = new ConfirmationCode
             {
                 PhoneNumber = requestModel.PhoneNumber,
-                Code = GenerateRandomCode(),
+                Code = code,
                 ExpirationTime = DateTime.UtcNow.AddMinutes(ExpirationTime),
             };
+
+            Log.Information($"Generated code for {requestModel.PhoneNumber}: {code}");
 
             _context.ConfirmationCodes.Add(newConfirmationCode);
             await _context.SaveChangesAsync();
