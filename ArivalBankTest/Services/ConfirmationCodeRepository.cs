@@ -10,10 +10,12 @@ namespace ArivalBankTest.Services
     {
         private readonly ApplicationDbContext _context;
         private readonly IConfiguration _configuration;
-        public ConfirmationCodeRepository(ApplicationDbContext context, IConfiguration configuration)
+        private readonly IRedisCacheProvider _redisCache;
+        public ConfirmationCodeRepository(ApplicationDbContext context, IConfiguration configuration, IRedisCacheProvider redisCache)
         {
             _context = context;
             _configuration = configuration;
+            _redisCache = redisCache;
         }
 
         public string GenerateRandomCode()
@@ -43,10 +45,28 @@ namespace ArivalBankTest.Services
 
         public async Task<ConfirmationCode> GetCodeAsync(CheckCodeRequestModel requestModel)
         {
-            var response = await _context.ConfirmationCodes
+            var cacheKey = $"ConfirmationCode:{requestModel.PhoneNumber}:{requestModel.Code}";
+            var cachedCode = await _redisCache.GetAsync<ConfirmationCode>(cacheKey);
+
+            if (cachedCode != null)
+            {
+                return cachedCode;
+            }
+            else
+            {
+                var response = await _context.ConfirmationCodes
                 .FirstOrDefaultAsync(c => c.PhoneNumber == requestModel.PhoneNumber && c.Code == requestModel.Code);
 
-            return response!;
+                if (response != null)
+                {
+                    // Cache the result for future use
+                    await _redisCache.SetAsync(cacheKey, response, TimeSpan.FromMinutes(5));
+
+                    return response;
+                }
+
+                return null!;
+            }            
         }
 
         public async Task<bool> HasMaxConcurrentCodesAsync(string phoneNumber)
