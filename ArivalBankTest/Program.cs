@@ -15,6 +15,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 // services
 builder.Services.AddScoped<IConfirmationCodeRepository, ConfirmationCodeRepository>();
+builder.Services.AddScoped<IRedisCacheProvider, RedisCacheProvider>();
 
 
 // logging
