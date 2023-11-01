@@ -35,7 +35,8 @@ Create an appsettings.json file in the project root directory with the following
   }
 }
 ````
-Replace "YOUR-SQL-CONNECTION-STRING" with your MS-SQL Server connection string.
+Replace "YOUR-SQL-CONNECTION-STRING" with your MS-SQL Server connection string. </br>
+Run migration: migration files have already  been created, all you will need to do is run the following command `update-database`
 
 ### Endpoints
 #### Send a Confirmation Code
